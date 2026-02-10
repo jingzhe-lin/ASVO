@@ -73,3 +73,16 @@ ASVO/
 ```
 
 > Environment settings are maintained in `env_setting.py`. Modify this file first when updating Python/package environment configuration.
+
+## Citation ASVO
+
+If you use ASVO in your work, please cite the article:
+
+```bibtex
+@article{wang2024simulating,
+  title   = {Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions},
+  author  = {Lin, Jingzhe and Zhang, Ceyao and Yang, Yaodong and Wang, Yizhou and Zhu, Song-Chun and Zhong, Fangwei},
+  journal = {},
+  year    = {2026}
+}
+
