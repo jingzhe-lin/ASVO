@@ -1,18 +1,16 @@
-# ASVO
-
-### Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions
+# Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions
 
 paper link:
 
-## Abstract
+## Introduction
 
-Large language models (LLMs) have recently shown promise in simulating complex social behavior through autonomous agents. However, existing systems often overlook how agents’ internal psychological structures evolve through prolonged interaction. This paper presents a novel method, **ASVO (Autonomous Social Value-Oriented agents)**, which integrates Social Value Orientation (SVO) with value-driven LLM agents. Our approach enables generalizable, high-fidelity generation of social behaviors by combining structured motivational profiles with dynamic SVO adaptation. Each agent is equipped with a structured set of social desires. The intensities fluctuate over time and are updated using an LLM-based reflective mechanism conditioned on social context. Agents continuously adapt their expectations, monitor personal and others' satisfaction, and update their SVO accordingly. We conduct systematic simulations across varying social environments to examine the emergence of cooperation, competition, and personality drift. Results show that our agents exhibit more human-like behavioral adaptations, with SVO shifts aligning with observed social dynamics. Our findings suggest that integrating structured desire systems and adaptive SVO drift enables more realistic and interpretable multi-agent social simulations.
+**ASVO (Autonomous Social Value-Oriented agents)** is a multi-agent simulation framework that combines Social Value Orientation (SVO) with value-driven LLM agents. Instead of fixed behavior rules, agents maintain structured social desires and update them through context-aware reflection during interaction. This enables adaptive behavior over time, including shifts between cooperation and competition, and supports more realistic, interpretable social simulations.
 
-## Autonomous Social Value-Oriented agents Framework
+The framework of **ASVO** is shown below:
 
 ![ASVO Framework](imgs/framework.png)
 
-## Environment
+## Installation
 
 1. Clone ASVO:
 
@@ -52,19 +50,12 @@ ASVO/
 │   │   │   ├── Baseline_LLMob.py
 │   │   │   ├── Baseline_ReAct.py
 │   │   │   └── ...
-│   │   ├── Environment_construction/
-│   │   │   └── generate_indoor_situation.py
 │   │   ├── NPC_agent/
-│   │   │   └── generic_support_agent.py
 │   │   ├── value_components/
-│   │   │   ├── desire_no_svo_comp.py
-│   │   │   ├── desire_svo_comp.py
 │   │   │   └── ...
 │   │   ├── Simulation.ipynb
 │   │   ├── env_setting.py
-│   │   ├── simulation_setup.py
-│   │   └── __init__.py
-│   ├── __init__.py
+│   │   └── simulation_setup.py
 │   ├── import_test.py
 │   └── requirements.txt
 ├── environment_ASVO.yml
@@ -74,15 +65,145 @@ ASVO/
 
 > Environment settings are maintained in `env_setting.py`. Modify this file first when updating Python/package environment configuration.
 
+## Usage
+
+### Scenario environment setting modification
+
+Simulation scenario configuration is maintained in `examples/ASVO/env_setting.py`.
+When you want to change the interaction world (context, roles, goals, observations), edit this file.
+
+Typical fields you may customize:
+- `shared_memories`: global background context shared by all agents
+- `player observe` / `gm observe`: each role's observation prompt
+- `roles`: character profile, goal, personality, and specific memories
+
+Example (in `examples/ASVO/env_setting.py`):
+
+```python
+ENV_SETTING = {
+  "shared_memories": [
+    "It is the weekend, 和 two employees are working overtime in the office.",
+    "Their manager is not in the room, so they interact freely."
+  ],
+  "Role Classification": ["Alice", "Bob"],
+  "roles": [
+    {
+      "name": "Alice",
+      "social_personality": "Altruistic",
+      "goal": "Alice wants to finish tasks carefully and improve collaboration.",
+      "main_character": True,
+    },
+    {
+      "name": "Bob",
+      "social_personality": "Altruistic",
+      "goal": "Bob wants fair workload and balanced recognition.",
+      "main_character": True,
+    }
+  ]
+}
+```
+
+### Value settings modification
+
+If you want to adjust desire dimensions (for example, add a new desire), update the following files in order.
+
+1. **Select desires in `examples/ASVO/simulation_setup.py`**
+
+```python
+wanted_desires = [
+    "sense of superiority",
+    "sense_of_achievement",
+    "confidence",
+    "joyfulness",
+    "comfort",
+    "recognition",
+    "spiritual satisfaction",
+    "sense of control",
+    # "sense of wonder",  # example new desire
+]
+
+hidden_desires = []
+```
+
+2. **Modify desire metadata and routing in `examples/ASVO/value_components/init_value_info_social.py`**
+
+```python
+# 1) add adjective -> desire mapping
+profile_dict = {
+    # ...
+    "curious": "sense of wonder",
+}
+
+# 2) add desire name
+values_names = [
+    # ...
+    "sense of wonder",
+]
+
+# 3) add description
+values_names_descriptions = {
+    # ...
+    "sense of wonder": "The value of sense of wonder ranges from 0 to 10 ...",
+}
+
+# 4) in get_all_desire_components / get_all_desire_components_without_PreAct,
+#    add branch mapping this desire name to the corresponding component class
+```
+
+3. **Add desire component classes in `examples/ASVO/value_components/desire_svo_comp.py`**
+
+```python
+class SenseOfWonder(desire):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+
+class SenseOfWonderWithoutPreAct(desireWithoutPreAct):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+```
+
+4. **If you also use no-SVO pipeline, add the same classes in `examples/ASVO/value_components/desire_no_svo_comp.py`**
+
+```python
+class SenseOfWonder(desire):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+
+class SenseOfWonderWithoutPreAct(desireWithoutPreAct):
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+```
+
+5. **Add qualitative scale mapping in `examples/ASVO/value_components/hardcoded_value_state.py`**
+
+```python
+hardcode_state = {
+    # ...
+    "sense of wonder": {
+        0: "No curiosity or amazement about the world.",
+        1: "Very low sense of wonder.",
+        # ...
+        10: "Deeply fascinated and constantly exploring the world.",
+    },
+}
+```
+
+After these updates, rerun your simulation to verify the new/modified desire is correctly initialized and tracked.
+
 ## Citation ASVO
 
 If you use ASVO in your work, please cite the article:
 
 ```bibtex
-@article{wang2024simulating,
-  title   = {Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions},
+@inproceedings{asvo,
   author  = {Lin, Jingzhe and Zhang, Ceyao and Yang, Yaodong and Wang, Yizhou and Zhu, Song-Chun and Zhong, Fangwei},
-  journal = {},
+  title   = {Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions},
+  booktitle = {Proceedings of the 25th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2026)},
   year    = {2026}
+  editor  = {editor xx},
+  pages   = {xx--xx},
+  address = {Paphos, Cyprus},
+  publisher = {Association for Computing Machinery},
+  doi     = {10.1145/OITH7375}
 }
-
+```
