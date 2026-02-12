@@ -200,10 +200,7 @@ If you use ASVO in your work, please cite the article:
   title   = {Beyond Self-Interest: Modeling Social-Oriented Motivation for Human-like Multi-Agent Interactions},
   booktitle = {Proceedings of the 25th International Conference on Autonomous Agents and Multiagent Systems (AAMAS 2026)},
   year    = {2026}
-  editor  = {editor xx},
-  pages   = {xx--xx},
   address = {Paphos, Cyprus},
   publisher = {Association for Computing Machinery},
-  doi     = {10.1145/OITH7375}
 }
 ```
