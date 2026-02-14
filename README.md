@@ -92,7 +92,7 @@ Example (in `examples/ASVO/env_setting.py`):
 ```python
 ENV_SETTING = {
   "shared_memories": [
-    "It is the weekend, �?two employees are working overtime in the office.",
+    "It is the weekend, two employees are working overtime in the office.",
     "Their manager is not in the room, so they interact freely."
   ],
   "Role Classification": ["Alice", "Bob"],
