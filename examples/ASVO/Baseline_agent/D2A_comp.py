@@ -16,7 +16,7 @@ from concordia.utils import measurements as measurements_lib
 
 import importlib
 
-IMPORT_AGENT_BASE_DIR = 'examples.ASVO.value_components.old_version'
+IMPORT_AGENT_BASE_DIR = 'examples.ASVO.value_components.baseline_version'
 init_value_info_social = importlib.import_module(
     f'{IMPORT_AGENT_BASE_DIR}.init_value_info')
 # init_svo_info = importlib.import_module(
@@ -167,7 +167,7 @@ def build_D2A_origin_agent(
         components=tracked_components,
         current_time=current_time,
     )
-    # profile_comp的作用是记录 Agent 的个人档案信息
+    # profile_comp的作用是记录 Agent 的个人档案信�?
 
     ## Value Components
     general_pre_act_label = f"\n{agent_name}" + "'s current feeling of {desire_name} is"

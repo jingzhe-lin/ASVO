@@ -12,55 +12,63 @@ The framework of **ASVO** is shown below:
 
 ## Installation
 
-1. Clone ASVO:
+1. Clone ASVO  
+   Bash (macOS/Linux)  
+   ```bash
+   git clone https://github.com/<your-org>/ASVO.git
+   cd ASVO
+   ```
+   PowerShell (Windows)  
+   ```powershell
+   git clone https://github.com/<your-org>/ASVO.git
+   Set-Location ASVO
+   ```
 
-```bash
-git clone https://github.com/<your-org>/ASVO.git
-cd ASVO
-```
+2. Create and activate the Conda environment  
+   Bash  
+   ```bash
+   conda env create -f environment_ASVO.yml
+   conda activate ASVO
+   ```
+   PowerShell  
+   ```powershell
+   conda env create -f environment_ASVO.yml
+   conda activate ASVO
+   ```
 
-2. Create and activate the Conda environment:
-
-```bash
-conda env create -f environment_ASVO.yml
-conda activate ASVO
-```
-
-3. Reinstall Concordia in editable mode (run in the repository root that contains `concordia` and `examples`):
-
-```bash
-pip install -e .[dev]
-```
+3. Reinstall Concordia in editable mode (run in the repository root that contains `concordia` and `examples`):  
+   ```bash
+   pip install -e .[dev]
+   ```
 
 ## Project Structure
 
 ```text
 ASVO/
-├── concordia/
-│   └── ...
-├── examples/
-│   ├── ASVO/
-│   │   ├── ASVO_agent/
-│   │   │   ├── ValueAgent.py
-│   │   │   ├── ValueAgent_without_SVO.py
-│   │   │   ├── Value_ActComp.py
-│   │   │   └── Value_Act_SVO.py
-│   │   ├── Baseline_agent/
-│   │   │   ├── Baseline_BabyAGI.py
-│   │   │   ├── Baseline_LLMob.py
-│   │   │   ├── Baseline_ReAct.py
-│   │   │   └── ...
-│   │   ├── NPC_agent/
-│   │   ├── value_components/
-│   │   │   └── ...
-│   │   ├── Simulation.ipynb
-│   │   ├── env_setting.py
-│   │   └── simulation_setup.py
-│   ├── import_test.py
-│   └── requirements.txt
-├── environment_ASVO.yml
-├── README.md
-└── LICENSE
+  concordia/
+  examples/
+    ASVO/
+      ASVO_agent/
+        ValueAgent.py
+        ValueAgent_without_SVO.py
+        Value_ActComp.py
+        Value_Act_SVO.py
+      Baseline_agent/
+        Baseline_BabyAGI.py
+        Baseline_LLMob.py
+        Baseline_ReAct.py
+        ...
+      NPC_agent/
+      value_components/
+        ...
+      Simulation.ipynb
+      env_setting.py
+      simulation_setup.py
+      import_test.py
+      requirements.txt
+  environment_ASVO.yml
+  README.md
+  LICENSE
 ```
 
 > Environment settings are maintained in `env_setting.py`. Modify this file first when updating Python/package environment configuration.
@@ -82,7 +90,7 @@ Example (in `examples/ASVO/env_setting.py`):
 ```python
 ENV_SETTING = {
   "shared_memories": [
-    "It is the weekend, 和 two employees are working overtime in the office.",
+    "It is the weekend, �?two employees are working overtime in the office.",
     "Their manager is not in the room, so they interact freely."
   ],
   "Role Classification": ["Alice", "Bob"],
@@ -204,3 +212,4 @@ If you use ASVO in your work, please cite the article:
   publisher = {Association for Computing Machinery},
 }
 ```
+

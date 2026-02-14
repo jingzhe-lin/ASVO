@@ -22,7 +22,7 @@ from concordia.components.agent.constant import DEFAULT_PRE_ACT_KEY
 DEFAULT_PRE_ACT_KEY = 'Act'
 from typing import Mapping, Sequence
 import importlib
-IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.old_version'
+IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.baseline_version'
 IMPORT_AGENT_BASE_DIR = 'examples.ASVO.value_components'
 init_value_info_social = importlib.import_module(
     f'{IMPORT_AGENT_BASE_DIR}.init_value_info_social')
@@ -257,3 +257,4 @@ def build_ReAct_agent(
     )
 
     return agent
+

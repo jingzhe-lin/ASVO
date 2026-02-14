@@ -25,7 +25,7 @@ import sys
 import os
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import importlib
-IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.old_version'
+IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.baseline_version'
 IMPORT_AGENT_BASE_DIR = 'examples.ASVO.value_components'
 init_value_info_social = importlib.import_module(
     f'{IMPORT_AGENT_BASE_DIR}.init_value_info_social')
@@ -267,3 +267,4 @@ def build_BabyAGI_agent(*,
     )
 
     return agent
+

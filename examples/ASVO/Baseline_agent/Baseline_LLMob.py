@@ -24,7 +24,7 @@ DEFAULT_PRE_ACT_KEY = 'Act'
 from concordia.components.agent import observation
 from concordia.document import interactive_document
 import importlib
-IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.old_version'
+IMPORT_AGENT_BASE_DIR_NEW = 'examples.ASVO.value_components.baseline_version'
 IMPORT_AGENT_BASE_DIR = 'examples.ASVO.value_components'
 init_value_info_social = importlib.import_module(
     f'{IMPORT_AGENT_BASE_DIR}.init_value_info_social')
@@ -419,3 +419,4 @@ def build_LLMob_agent(
     )
 
     return agent
+
