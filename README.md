@@ -15,12 +15,12 @@ The framework of **ASVO** is shown below:
 1. Clone ASVO  
    Bash (macOS/Linux)  
    ```bash
-   git clone https://github.com/<your-org>/ASVO.git
+   git clone https://github.com/jingzhe-lin/ASVO.git
    cd ASVO
    ```
    PowerShell (Windows)  
    ```powershell
-   git clone https://github.com/<your-org>/ASVO.git
+   git clone https://github.com/jingzhe-lin/ASVO.git
    Set-Location ASVO
    ```
 
