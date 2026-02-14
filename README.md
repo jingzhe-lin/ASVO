@@ -45,30 +45,32 @@ The framework of **ASVO** is shown below:
 
 ```text
 ASVO/
-  concordia/
-  examples/
-    ASVO/
-      ASVO_agent/
-        ValueAgent.py
-        ValueAgent_without_SVO.py
-        Value_ActComp.py
-        Value_Act_SVO.py
-      Baseline_agent/
-        Baseline_BabyAGI.py
-        Baseline_LLMob.py
-        Baseline_ReAct.py
-        ...
-      NPC_agent/
-      value_components/
-        ...
-      Simulation.ipynb
-      env_setting.py
-      simulation_setup.py
-      import_test.py
-      requirements.txt
-  environment_ASVO.yml
-  README.md
-  LICENSE
+├── concordia/
+├── examples/
+│   └── ASVO/
+│       ├── ASVO_agent/
+│       │   ├── ValueAgent.py
+│       │   ├── Value_ActComp.py
+│       │   ├── Value_Act_SVO.py
+│       │   └── ...
+│       ├── Baseline_agent/
+│       │   ├── Baseline_BabyAGI.py
+│       │   ├── Baseline_LLMob.py
+│       │   ├── Baseline_ReAct.py
+│       │   └── ...
+│       ├── NPC_agent/
+│       ├── value_components/
+│       │   ├── baseline_vision/
+│       │   ├── desire_svo_comp.py
+│       │   ├── init_value_info_social.py
+│       │   ├── hardcoded_value_state.py
+│       │   └── ...
+│       ├── Simulation.ipynb
+│       ├── env_setting.py
+│       └── simulation_setup.py
+├── environment_ASVO.yml
+├── README.md
+└── LICENSE
 ```
 
 > Environment settings are maintained in `env_setting.py`. Modify this file first when updating Python/package environment configuration.
@@ -90,7 +92,7 @@ Example (in `examples/ASVO/env_setting.py`):
 ```python
 ENV_SETTING = {
   "shared_memories": [
-    "It is the weekend, �?two employees are working overtime in the office.",
+    "It is the weekend, �?two employees are working overtime in the office.",
     "Their manager is not in the room, so they interact freely."
   ],
   "Role Classification": ["Alice", "Bob"],
