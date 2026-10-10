@@ -14,7 +14,7 @@ import importlib
 # from concordia.typing import entity_component
 # from concordia.utils import measurements as measurements_lib
 # from concordia.components.agent.question_of_query_associated_memories import Identity, IdentityWithoutPreAct
-from examples.D2A.value_components.old_version import value_comp
+from . import value_comp
 from concordia.components.agent import memory_component
 
 profile_dict = {

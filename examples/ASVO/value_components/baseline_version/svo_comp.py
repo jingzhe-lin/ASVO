@@ -13,7 +13,7 @@ from concordia.typing import entity as entity_lib
 from concordia.typing import logging
 from concordia.language_model import language_model
 from concordia.document import interactive_document
-from examples.D2A.value_components.old_version.value_comp import DEFAULT_VALUE_SCALE, desire
+from .value_comp import DEFAULT_VALUE_SCALE, desire
 
 DEFAULT_SATISFACTION = 5
 

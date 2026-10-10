@@ -102,10 +102,10 @@ class MCTSActComponent(entity_component.ActingComponent):
         # ── 不显式出现 SVO / 回正 ──
         if svo_value < low:
             # 行为过于自利 → 提醒更多顾及他人
-            hint = f"{agent_name} should also consider his/her own gains when comparing the options when take actions. "
+            hint = f"{agent_name} should also consider others' gains when comparing the options when taking actions. "
         else:  # svo_value > high
             # 行为过于利他 → 提醒关注自身
-            hint = f"{agent_name} should give extra weight to actions that raise others' satisfaction when take actions. "
+            hint = f"{agent_name} should also consider his/her own gains when comparing the options when taking actions. "
 
         return (
             f"{agent_name}\'s current SVO value deviates from the expected value, "

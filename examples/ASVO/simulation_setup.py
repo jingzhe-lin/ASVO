@@ -9,6 +9,10 @@ ROOT = r""
 
 # how many episodes in each simulation
 episode_length = 1
+# Resume from the latest checkpoint in checkpoint_folder, or from checkpoint_file.
+# Keep both unset to start new simulations.
+checkpoint_folder = None
+checkpoint_file = None
 NUM_PLAYERS = 2
 # whether to use the language model, if set to True, No language model will be used
 # use for debugging

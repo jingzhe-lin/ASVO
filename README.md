@@ -200,6 +200,22 @@ hardcode_state = {
 
 After these updates, rerun your simulation to verify the new/modified desire is correctly initialized and tracked.
 
+## Resume a simulation from a checkpoint
+
+`examples/ASVO/Simulation.ipynb` now writes an atomic JSON checkpoint after each completed simulation step. New runs save checkpoints under:
+
+```text
+examples/ASVO/result_folder/simulation_result/<run timestamp>/checkpoints/<agent type>/
+```
+
+To resume the latest saved step, set `checkpoint_folder` in `examples/ASVO/simulation_setup.py` to that agent's checkpoint directory. To resume a specific step, set `checkpoint_file` to its `checkpoint_step_XXXXXX.json` file and leave `checkpoint_folder = None`. With both values set to `None`, the notebook starts new runs as before. A resume runs only the agent type recorded in the checkpoint and continues writing into the original run directory.
+
+`episode_length` remains the total number of steps for the run. Increase it beyond the checkpoint's step number if more steps should run. Resume requires compatible scenario, agent components, and code; checkpoints restore player and Game Master memories, component state, environment history, clock, and random number generators.
+
+Run the offline checkpoint regression checks from the repository root with
+`python -m unittest examples.ASVO.simulation_utils.checkpoint_test -v`.
+These checks do not call an external language model.
+
 ## Citation ASVO
 
 If you use ASVO in your work, please cite the article:

@@ -167,7 +167,7 @@ def build_D2A_origin_agent(
         components=tracked_components,
         current_time=current_time,
     )
-    # profile_comp的作用是记录 Agent 的个人档案信�?
+    # The profile component records the agent profile.
 
     ## Value Components
     general_pre_act_label = f"\n{agent_name}" + "'s current feeling of {desire_name} is"

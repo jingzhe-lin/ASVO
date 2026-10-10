@@ -22,6 +22,7 @@ preprint arXiv:2304.03442.
 
 from collections.abc import Callable, Iterable, Sequence
 import datetime
+import io
 import threading
 
 from concordia.associative_memory import importance_function
@@ -88,7 +89,12 @@ class AssociativeMemory:
       output = {
           'seed': self._seed,
           'stored_hashes': list(self._stored_hashes),
-          'memory_bank': self._memory_bank.to_json(),
+          'memory_records': [
+              dict(row, time=row['time'].isoformat(),
+                   tags=list(row['tags']),
+                   embedding=np.asarray(row['embedding']).tolist())
+              for row in self._memory_bank.to_dict(orient='records')
+          ],
       }
       if self._interval:
         output['interval'] = self._interval.total_seconds()
@@ -99,10 +105,31 @@ class AssociativeMemory:
 
     with self._memory_bank_lock:
       self._seed = state['seed']
-      self._stored_hashes = set(state['stored_hashes'])
-      self._memory_bank = pd.read_json(state['memory_bank'])
-      if 'interval' in state:
-        self._interval = datetime.timedelta(seconds=state['interval'])
+      if 'memory_records' in state:
+        self._memory_bank = pd.DataFrame(
+            state['memory_records'],
+            columns=['text', 'time', 'tags', 'embedding', 'importance'])
+        self._memory_bank['time'] = pd.to_datetime(self._memory_bank['time'])
+      else:
+        # Read checkpoints from the previous pandas JSON representation.
+        self._memory_bank = pd.read_json(io.StringIO(state['memory_bank']))
+        if pd.api.types.is_numeric_dtype(self._memory_bank['time']):
+          self._memory_bank['time'] = pd.to_datetime(
+              self._memory_bank['time'], unit='ms')
+        else:
+          self._memory_bank['time'] = pd.to_datetime(self._memory_bank['time'])
+      self._memory_bank['tags'] = self._memory_bank['tags'].apply(tuple)
+      self._memory_bank['embedding'] = self._memory_bank['embedding'].apply(
+          np.asarray)
+      # Python string hashes change between processes. Rebuild deduplication
+      # hashes from the restored contents rather than reusing saved integers.
+      self._stored_hashes = {
+          hash((row['text'], row['time'].to_pydatetime(), row['tags'],
+                row['importance']))
+          for row in self._memory_bank.to_dict(orient='records')
+      }
+      self._interval = (datetime.timedelta(seconds=state['interval'])
+                        if 'interval' in state else None)
 
   def add(
       self,

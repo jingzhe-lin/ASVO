@@ -579,6 +579,18 @@ class desire(agent_components.action_spec_ignored.ActionSpecIgnored):
         self._action_cache.append(action_attempt)
         return ''
 
+    def get_state(self) -> entity_component.ComponentState:
+        return {
+            "value": self._value,
+            "value_change_cache": self._value_change_cache,
+            "action_cache": self._action_cache,
+        }
+
+    def set_state(self, state: entity_component.ComponentState) -> None:
+        self._value = int(state["value"])
+        self._value_change_cache = list(state.get("value_change_cache", []))
+        self._action_cache = list(state.get("action_cache", []))
+
 class Hunger(desire):
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
@@ -1642,3 +1654,33 @@ class ValueTracker(agent_components.action_spec_ignored.ActionSpecIgnored):
 
     def get_current_expected_value_of_desire(self):
         return self._expected_value
+
+    def get_state(self) -> entity_component.ComponentState:
+        fields = (
+            "_step_counter", "_whole_delta_tracker", "_individual_desire_tracker",
+            "_individual_delta_tracker", "_individual_qualitative_desire_tracker",
+            "_action_cache", "_expected_value", "_svo_value",
+            "_expected_value_changed", "_alpha", "_beta",
+            "_estimate_other_desire_tracker", "_svo_tracker",
+            "_satisfaction_tracker", "_expected_value_traker", "_desire_value",
+            "_desire_delta", "_svo_questionnaire_value",
+            "_svo_questionnaire_tracker", "_self_satisfaction_value",
+            "_other_satisfaction_value",
+        )
+        return {name: getattr(self, name) for name in fields if hasattr(self, name)}
+
+    def set_state(self, state: entity_component.ComponentState) -> None:
+        for name, value in state.items():
+            if name not in {
+                "_step_counter", "_whole_delta_tracker", "_individual_desire_tracker",
+                "_individual_delta_tracker", "_individual_qualitative_desire_tracker",
+                "_action_cache", "_expected_value", "_svo_value",
+                "_expected_value_changed", "_alpha", "_beta",
+                "_estimate_other_desire_tracker", "_svo_tracker",
+                "_satisfaction_tracker", "_expected_value_traker", "_desire_value",
+                "_desire_delta", "_svo_questionnaire_value",
+                "_svo_questionnaire_tracker", "_self_satisfaction_value",
+                "_other_satisfaction_value",
+            }:
+                raise ValueError(f"Unexpected ValueTracker state field: {name}")
+            setattr(self, name, value)

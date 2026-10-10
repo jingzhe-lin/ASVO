@@ -18,7 +18,7 @@ from collections.abc import Callable, Sequence
 from concordia.typing import logging
 from concordia.document import interactive_document
 from concordia.typing.entity import ActionSpec
-from examples.D2A.value_components.hardcoded_value_state import hardcode_state
+from ..hardcoded_value_state import hardcode_state
 DEFAULT_VALUE_SCALE = tuple(range(11))
 def _get_class_name(object_: object) -> str:
   return object_.__class__.__name__
@@ -333,6 +333,16 @@ class desire(agent_components.action_spec_ignored.ActionSpecIgnored):
     def post_act(self, action_attempt: str) -> str:
         self._action_cache.append(action_attempt)
         return ''
+
+    def get_state(self) -> entity_component.ComponentState:
+        return {"value": self._value,
+                "value_change_cache": self._value_change_cache,
+                "action_cache": self._action_cache}
+
+    def set_state(self, state: entity_component.ComponentState) -> None:
+        self._value = int(state["value"])
+        self._value_change_cache = list(state["value_change_cache"])
+        self._action_cache = list(state["action_cache"])
 
 class Hunger(desire):
     def __init__(self, *args, **kwargs):
@@ -784,3 +794,15 @@ class ValueTracker(agent_components.action_spec_ignored.ActionSpecIgnored):
 
     def get_expected_value_dict(self) -> dict:
         return self._expected_value_dict
+
+    def get_state(self) -> entity_component.ComponentState:
+        return {name: getattr(self, name) for name in (
+            "_step_counter", "_whole_delta_tracker", "_individual_desire_tracker",
+            "_individual_delta_tracker", "_individual_qualitative_desire_tracker",
+            "_action_cache", "_expected_value_dict")}
+
+    def set_state(self, state: entity_component.ComponentState) -> None:
+        if set(state) != set(self.get_state()):
+            raise ValueError("D2A ValueTracker state fields do not match")
+        for name, value in state.items():
+            setattr(self, name, value)
