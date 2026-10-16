@@ -77,6 +77,18 @@ ASVO/
 
 ## Usage
 
+### Save model prompts
+
+`Simulation.ipynb` saves each prompt passed to the Concordia model, its response,
+and request status as JSONL in
+`examples/ASVO/result_folder/simulation_result/<run>/context_snapshots/`.
+Files are grouped by agent, game master, and optional judgment categories.
+When resuming from a checkpoint, new records append to the original run folder.
+The `SAVE_CONTEXT_SNAPSHOTS_*` switches in `examples/ASVO/simulation_setup.py`
+control which categories are saved. Agent and game master records are enabled
+by default; unknown agent and judgment records are disabled by default.
+Snapshots contain prompt text, so keep generated result folders private.
+
 ### Scenario environment setting modification
 
 Simulation scenario configuration is maintained in `examples/ASVO/env_setting.py`.

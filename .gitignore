@@ -1,0 +1,6 @@
+# Generated ASVO simulation runs and prompt snapshots.
+examples/ASVO/result_folder/
+examples/ASVO/context_snapshots/
+__pycache__/
+*.py[cod]
+.pytest_cache/

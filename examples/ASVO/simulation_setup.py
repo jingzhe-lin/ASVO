@@ -1,6 +1,7 @@
 import sentence_transformers
 
 from concordia.language_model import my_utils as utils
+from concordia.language_model.context_snapshot_model import ContextSnapshotModel
 import json
 import os
 
@@ -18,6 +19,22 @@ NUM_PLAYERS = 2
 # use for debugging
 # disable_language_model = True
 disable_language_model = False
+
+# Save complete model prompts and responses to each simulation run's
+# context_snapshots directory. Disable individual categories as needed.
+SAVE_CONTEXT_SNAPSHOTS_AGENT = True
+SAVE_CONTEXT_SNAPSHOTS_GAME_MASTER = True
+SAVE_CONTEXT_SNAPSHOTS_UNKNOWN_AGENT = False
+SAVE_CONTEXT_SNAPSHOTS_IMPORTANCE_JUDGMENTS = False
+SAVE_CONTEXT_SNAPSHOTS_SLEEP_STATE = False
+for category, enabled in {
+    'AGENT': SAVE_CONTEXT_SNAPSHOTS_AGENT,
+    'GAME_MASTER': SAVE_CONTEXT_SNAPSHOTS_GAME_MASTER,
+    'UNKNOWN_AGENT': SAVE_CONTEXT_SNAPSHOTS_UNKNOWN_AGENT,
+    'IMPORTANCE_JUDGMENTS': SAVE_CONTEXT_SNAPSHOTS_IMPORTANCE_JUDGMENTS,
+    'SLEEP_STATE': SAVE_CONTEXT_SNAPSHOTS_SLEEP_STATE,
+}.items():
+  os.environ[f'CONCORDIA_CONTEXT_SNAPSHOT_SAVE_{category}'] = '1' if enabled else '0'
 
 # the sentence transformer model used to encode the text
 st_model = sentence_transformers.SentenceTransformer(
@@ -64,6 +81,8 @@ model = utils.language_model_setup(
     api_key=api_key,
     disable_language_model=disable_language_model,
 )
+if not disable_language_model:
+  model = ContextSnapshotModel(model, model_name)
 
 # the desires that will be used in the simulation
 ###

@@ -17,6 +17,7 @@
 from collections.abc import Collection, Iterator, Mapping, Sequence
 from concurrent import futures
 import contextlib
+import contextvars
 import functools
 from typing import Any, Callable, TypeVar
 
@@ -91,7 +92,7 @@ def _as_completed(
     max_workers = len(tasks)
   with _executor(max_workers=max_workers) as executor_:
     key_by_future = {
-        executor_.submit(_run_task, key, task): key
+        executor_.submit(contextvars.copy_context().run, _run_task, key, task): key
         for key, task in tasks.items()
     }
     for future in futures.as_completed(key_by_future, timeout=timeout):

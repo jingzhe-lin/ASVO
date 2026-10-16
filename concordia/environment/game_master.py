@@ -24,6 +24,7 @@ from typing import Any
 from concordia import components as generic_components
 from concordia.associative_memory import associative_memory
 from concordia.document import interactive_document
+from concordia.language_model import context_snapshot_logger
 from concordia.language_model import language_model
 from concordia.thought_chains import thought_chains
 from concordia.typing import agent as agent_lib
@@ -295,6 +296,7 @@ class GameMaster:
         for component in self._components.values()
     })
 
+  @context_snapshot_logger.with_agent_name
   def _step_player(
       self,
       player: agent_lib.GenerativeAgent,

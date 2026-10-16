@@ -21,6 +21,7 @@ import types
 from typing import cast
 
 from concordia.components.agent import no_op_context_processor
+from concordia.language_model import context_snapshot_logger
 from concordia.typing import entity
 from concordia.typing import entity_component
 from concordia.utils import concurrency
@@ -139,6 +140,7 @@ class EntityAgent(entity_component.EntityWithComponents):
     return concurrency.run_tasks(tasks)
 
   @override
+  @context_snapshot_logger.with_agent_name
   def act(
       self, action_spec: entity.ActionSpec = entity.DEFAULT_ACTION_SPEC
   ) -> str:
@@ -162,6 +164,7 @@ class EntityAgent(entity_component.EntityWithComponents):
       return action_attempt
 
   @override
+  @context_snapshot_logger.with_agent_name
   def observe(self, observation: str) -> None:
     with self._control_lock:
       self._set_phase(entity_component.Phase.PRE_OBSERVE)
